@@ -1,10 +1,11 @@
 import { useMemo, useState } from 'react';
-import { Badge, Button, Card, Col, Form, Row, Table } from 'react-bootstrap';
+import { Badge, Button, Card, Col, Row, Table } from 'react-bootstrap';
 import { Link } from 'react-router-dom';
 import Carregando from '../../components/Carregando';
 import FormularioTurma from '../../components/FormularioTurma';
 import MensagemErro from '../../components/MensagemErro';
 import ModalConfirmacao from '../../components/ModalConfirmacao';
+import Seletor from '../../components/Seletor';
 import { useNotificacao } from '../../context/NotificacaoContext';
 import useDados from '../../hooks/useDados';
 import { del, post, put } from '../../services/api';
@@ -50,8 +51,8 @@ export default function Turmas() {
       .sort((a, b) => (a.disciplina?.codigo ?? '').localeCompare(b.disciplina?.codigo ?? ''));
   }, [dados, filtros]);
 
-  function handleFiltro(evento) {
-    setFiltros({ ...filtros, [evento.target.name]: evento.target.value });
+  function alterarFiltro(campo, valor) {
+    setFiltros({ ...filtros, [campo]: valor });
   }
 
   async function salvar(turma) {
@@ -105,48 +106,41 @@ export default function Turmas() {
           <Card.Body>
             <Row className="g-2 mb-3">
               <Col sm={4} lg={3}>
-                <Form.Select name="semestre" value={filtros.semestre} onChange={handleFiltro} aria-label="Semestre">
-                  <option value="">Todos os semestres</option>
-                  {semestres.map((s) => (
-                    <option key={s} value={s}>
-                      {s}
-                    </option>
-                  ))}
-                </Form.Select>
+                <Seletor
+                  ariaLabel="Semestre"
+                  value={filtros.semestre}
+                  onChange={(valor) => alterarFiltro('semestre', valor)}
+                  opcoes={[
+                    { valor: '', rotulo: 'Todos os semestres' },
+                    ...semestres.map((s) => ({ valor: s, rotulo: s })),
+                  ]}
+                />
               </Col>
               <Col sm={4} lg={3}>
-                <Form.Select
-                  name="disciplinaId"
+                <Seletor
+                  ariaLabel="Disciplina"
                   value={filtros.disciplinaId}
-                  onChange={handleFiltro}
-                  aria-label="Disciplina"
-                >
-                  <option value="">Todas as disciplinas</option>
-                  {[...dados.disciplinas]
-                    .sort((a, b) => a.codigo.localeCompare(b.codigo))
-                    .map((d) => (
-                      <option key={d.id} value={d.id}>
-                        {d.codigo} — {d.nome}
-                      </option>
-                    ))}
-                </Form.Select>
+                  onChange={(valor) => alterarFiltro('disciplinaId', valor)}
+                  opcoes={[
+                    { valor: '', rotulo: 'Todas as disciplinas' },
+                    ...[...dados.disciplinas]
+                      .sort((a, b) => a.codigo.localeCompare(b.codigo))
+                      .map((d) => ({ valor: d.id, rotulo: `${d.codigo} — ${d.nome}` })),
+                  ]}
+                />
               </Col>
               <Col sm={4} lg={3}>
-                <Form.Select
-                  name="professorId"
+                <Seletor
+                  ariaLabel="Professor"
                   value={filtros.professorId}
-                  onChange={handleFiltro}
-                  aria-label="Professor"
-                >
-                  <option value="">Todos os professores</option>
-                  {[...dados.professores]
-                    .sort((a, b) => a.nome.localeCompare(b.nome))
-                    .map((p) => (
-                      <option key={p.id} value={p.id}>
-                        {p.nome}
-                      </option>
-                    ))}
-                </Form.Select>
+                  onChange={(valor) => alterarFiltro('professorId', valor)}
+                  opcoes={[
+                    { valor: '', rotulo: 'Todos os professores' },
+                    ...[...dados.professores]
+                      .sort((a, b) => a.nome.localeCompare(b.nome))
+                      .map((p) => ({ valor: p.id, rotulo: p.nome })),
+                  ]}
+                />
               </Col>
             </Row>
 
