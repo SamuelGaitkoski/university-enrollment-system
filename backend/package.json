@@ -1,0 +1,16 @@
+{
+  "name": "backend",
+  "version": "1.0.0",
+  "private": true,
+  "description": "API REST simples (Express + arquivo JSON) do Sistema de Matrículas",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js",
+    "dev": "node --watch-path=server.js server.js",
+    "seed": "node -e \"require('fs').copyFileSync('db.seed.json', 'db.json'); console.log('db.json restaurado a partir do seed')\""
+  },
+  "dependencies": {
+    "cors": "^2.8.6",
+    "express": "^5.3.0"
+  }
+}
