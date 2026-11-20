@@ -5,6 +5,7 @@ export default function ModalConfirmacao({
   titulo,
   mensagem,
   textoConfirmar = 'Confirmar',
+  textoCancelar = 'Cancelar',
   variante = 'danger',
   processando = false,
   onConfirmar,
@@ -19,7 +20,7 @@ export default function ModalConfirmacao({
       <Modal.Body>{mensagem}</Modal.Body>
       <Modal.Footer>
         <Button variant="outline-secondary" onClick={onCancelar} disabled={processando}>
-          Cancelar
+          {textoCancelar}
         </Button>
         <Button variant={variante} onClick={onConfirmar} disabled={processando}>
           {processando && <Spinner size="sm" className="me-2" />}
