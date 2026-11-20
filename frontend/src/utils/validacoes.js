@@ -79,3 +79,27 @@ export function validarAluno(form, alunos, idAtual) {
 
   return erros;
 }
+
+// Validação de formato da turma; as regras de conflito e carga ficam em regras.js
+export function validarTurma(form, matriculados = 0) {
+  const erros = {};
+
+  if (!form.disciplinaId) erros.disciplinaId = 'Selecione a disciplina.';
+  if (!form.professorId) erros.professorId = 'Selecione o professor.';
+  if (!REGEX.semestre.test(form.semestre)) erros.semestre = 'Use o formato AAAA/1 ou AAAA/2 (ex.: 2026/2).';
+
+  if (form.horarios.length === 0) {
+    erros.horarios = 'Escolha pelo menos um horário.';
+  } else if (!form.horarios.every((h) => REGEX.codigoHorario.test(h))) {
+    erros.horarios = 'Há um código de horário inválido.';
+  }
+
+  const vagas = Number(form.vagas);
+  if (!Number.isInteger(vagas) || vagas < 1 || vagas > 80) {
+    erros.vagas = 'Informe um número inteiro entre 1 e 80.';
+  } else if (vagas < matriculados) {
+    erros.vagas = `A turma já tem ${matriculados} alunos matriculados.`;
+  }
+
+  return erros;
+}
