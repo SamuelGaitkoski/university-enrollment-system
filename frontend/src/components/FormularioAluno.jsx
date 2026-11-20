@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import { Button, Col, Form, Modal, Row, Spinner } from 'react-bootstrap';
 import { validarAluno } from '../utils/validacoes';
+import Seletor from './Seletor';
 
 const CURSOS = [
   'Ciência da Computação',
@@ -119,21 +120,17 @@ export default function FormularioAluno({ aluno, alunos, disciplinas, onSalvar, 
             <Col md={6}>
               <Form.Group controlId="curso">
                 <Form.Label>Curso</Form.Label>
-                <Form.Select
-                  name="curso"
+                <Seletor
+                  id="curso"
                   value={form.curso}
-                  onChange={handleChange}
-                  onBlur={handleBlur}
-                  isInvalid={Boolean(erroVisivel('curso'))}
-                >
-                  <option value="">Selecione...</option>
-                  {CURSOS.map((curso) => (
-                    <option key={curso} value={curso}>
-                      {curso}
-                    </option>
-                  ))}
-                </Form.Select>
-                <Form.Control.Feedback type="invalid">{erros.curso}</Form.Control.Feedback>
+                  onChange={(curso) => {
+                    setForm({ ...form, curso });
+                    setTocados({ ...tocados, curso: true });
+                  }}
+                  opcoes={CURSOS.map((curso) => ({ valor: curso, rotulo: curso }))}
+                  erro={erros.curso}
+                  mostrarErro={Boolean(erroVisivel('curso'))}
+                />
               </Form.Group>
             </Col>
           </Row>
