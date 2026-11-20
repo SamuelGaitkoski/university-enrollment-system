@@ -7,7 +7,9 @@
     { "id": "d5", "codigo": "INF210", "nome": "Programação Front-end", "creditos": 4, "preRequisitos": ["d2"] },
     { "id": "d6", "codigo": "MAT101", "nome": "Cálculo I", "creditos": 4, "preRequisitos": [] },
     { "id": "d7", "codigo": "INF110", "nome": "Lógica para Computação", "creditos": 2, "preRequisitos": [] },
-    { "id": "d8", "codigo": "INF320", "nome": "Engenharia de Software", "creditos": 2, "preRequisitos": ["d2"] }
+    { "id": "d8", "codigo": "INF320", "nome": "Engenharia de Software", "creditos": 2, "preRequisitos": ["d2"] },
+    { "id": "d9", "codigo": "INF220", "nome": "Redes de Computadores", "creditos": 4, "preRequisitos": ["d2"] },
+    { "id": "d10", "codigo": "MAT201", "nome": "Estatística", "creditos": 4, "preRequisitos": ["d6"] }
   ],
   "professores": [
     { "id": "p1", "nome": "Carlos Lima", "email": "carlos.lima@universidade.edu.br", "cargaMaxima": 12 },
@@ -31,8 +33,10 @@
     { "id": "t5", "disciplinaId": "d5", "professorId": "p1", "semestre": "2026/2", "horarios": ["23", "63"], "vagas": 30 },
     { "id": "t6", "disciplinaId": "d6", "professorId": "p3", "semestre": "2026/2", "horarios": ["22", "42"], "vagas": 50 },
     { "id": "t7", "disciplinaId": "d7", "professorId": "p1", "semestre": "2026/2", "horarios": ["32"], "vagas": 35 },
-    { "id": "t8", "disciplinaId": "d8", "professorId": "p4", "semestre": "2026/2", "horarios": ["71"], "vagas": 2 },
-    { "id": "t9", "disciplinaId": "d1", "professorId": "p2", "semestre": "2026/2", "horarios": ["31", "51"], "vagas": 40 }
+    { "id": "t8", "disciplinaId": "d8", "professorId": "p4", "semestre": "2026/2", "horarios": ["71"], "vagas": 1 },
+    { "id": "t9", "disciplinaId": "d1", "professorId": "p2", "semestre": "2026/2", "horarios": ["31", "51"], "vagas": 40 },
+    { "id": "t10", "disciplinaId": "d9", "professorId": "p2", "semestre": "2026/2", "horarios": ["52"], "vagas": 30 },
+    { "id": "t11", "disciplinaId": "d10", "professorId": "p3", "semestre": "2026/2", "horarios": ["33"], "vagas": 40 }
   ],
   "matriculas": [
     { "id": "m1", "alunoId": "a1", "turmaId": "t1", "dataMatricula": "2026-08-03T10:15:00.000Z" },
@@ -41,7 +45,6 @@
     { "id": "m4", "alunoId": "a2", "turmaId": "t2", "dataMatricula": "2026-08-04T14:02:00.000Z" },
     { "id": "m5", "alunoId": "a3", "turmaId": "t3", "dataMatricula": "2026-08-04T19:30:00.000Z" },
     { "id": "m6", "alunoId": "a3", "turmaId": "t5", "dataMatricula": "2026-08-04T19:32:00.000Z" },
-    { "id": "m7", "alunoId": "a3", "turmaId": "t8", "dataMatricula": "2026-08-04T19:35:00.000Z" },
     { "id": "m8", "alunoId": "a4", "turmaId": "t4", "dataMatricula": "2026-08-05T09:00:00.000Z" },
     { "id": "m9", "alunoId": "a4", "turmaId": "t5", "dataMatricula": "2026-08-05T09:04:00.000Z" },
     { "id": "m10", "alunoId": "a5", "turmaId": "t2", "dataMatricula": "2026-08-05T11:45:00.000Z" },
