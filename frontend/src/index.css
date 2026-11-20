@@ -11,3 +11,12 @@ body {
   transform: translateY(-2px);
   box-shadow: var(--bs-box-shadow) !important;
 }
+
+/* Seletor personalizado: usa a seta do form-select, menu com rolagem */
+.seletor .dropdown-toggle::after {
+  display: none;
+}
+.seletor .dropdown-menu {
+  max-height: 240px;
+  overflow-y: auto;
+}
