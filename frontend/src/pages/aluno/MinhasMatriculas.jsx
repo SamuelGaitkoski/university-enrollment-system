@@ -2,6 +2,7 @@ import { useMemo, useState } from 'react';
 import { Badge, Button, Card, ProgressBar, Table } from 'react-bootstrap';
 import { Link } from 'react-router-dom';
 import Carregando from '../../components/Carregando';
+import GradeSemanal from '../../components/GradeSemanal';
 import MensagemErro from '../../components/MensagemErro';
 import ModalConfirmacao from '../../components/ModalConfirmacao';
 import { useAuth } from '../../context/AuthContext';
@@ -30,6 +31,15 @@ export default function MinhasMatriculas() {
       .map((item) => ({ ...item, professor: dados.professores.find((p) => p.id === item.turma.professorId) }))
       .sort((a, b) => (a.disciplina?.codigo ?? '').localeCompare(b.disciplina?.codigo ?? ''));
   }, [dados, perfil.aluno.id]);
+
+  // Mesma GradeSemanal da secretaria, só com as turmas do aluno
+  const itensGrade = minhas.map(({ turma, disciplina, professor }) => ({
+    id: turma.id,
+    horarios: turma.horarios,
+    titulo: `${disciplina?.codigo} ${disciplina?.nome}`,
+    subtitulo: professor?.nome,
+    cor: 'success',
+  }));
 
   const creditos = minhas.reduce((total, { disciplina }) => total + (disciplina?.creditos ?? 0), 0);
 
@@ -136,6 +146,15 @@ export default function MinhasMatriculas() {
               )}
             </Card.Body>
           </Card>
+
+          {minhas.length > 0 && (
+            <Card className="shadow-sm border-0 mt-3">
+              <Card.Body>
+                <h2 className="h5 mb-3">Minha grade semanal</h2>
+                <GradeSemanal itens={itensGrade} />
+              </Card.Body>
+            </Card>
+          )}
         </>
       )}
 
