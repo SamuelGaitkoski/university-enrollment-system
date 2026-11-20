@@ -5,6 +5,7 @@ import Carregando from '../components/Carregando';
 import MensagemErro from '../components/MensagemErro';
 import { rotaInicial, useAuth } from '../context/AuthContext';
 import useDados from '../hooks/useDados';
+import Seletor from '../components/Seletor';
 
 export default function Entrar() {
   const { perfil, entrar } = useAuth();
@@ -73,19 +74,15 @@ export default function Entrar() {
 
               {!carregando && !erro && alunos.length > 0 && (
                 <Form onSubmit={entrarComoAluno} className="mt-auto">
-                  <Form.Select
-                    aria-label="Selecione o aluno"
-                    value={alunoId}
-                    onChange={(e) => setAlunoId(e.target.value)}
-                    className="mb-3"
-                  >
-                    <option value="">Selecione o aluno...</option>
-                    {alunos.map((aluno) => (
-                      <option key={aluno.id} value={aluno.id}>
-                        {aluno.nome} — {aluno.matricula}
-                      </option>
-                    ))}
-                  </Form.Select>
+                  <div className="mb-3 text-start">
+                    <Seletor
+                      ariaLabel="Selecione o aluno"
+                      placeholder="Selecione o aluno..."
+                      value={alunoId}
+                      onChange={setAlunoId}
+                      opcoes={alunos.map((a) => ({ valor: a.id, rotulo: `${a.nome} — ${a.matricula}` }))}
+                    />
+                  </div>
                   <Button type="submit" variant="success" className="w-100" disabled={!alunoId}>
                     Entrar como aluno
                   </Button>
