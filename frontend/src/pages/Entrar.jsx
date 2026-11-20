@@ -1,41 +1,22 @@
-import { useEffect, useState } from 'react';
+import { useMemo, useState } from 'react';
 import { Button, Card, Col, Form, Row } from 'react-bootstrap';
 import { Navigate, useNavigate } from 'react-router-dom';
 import Carregando from '../components/Carregando';
 import MensagemErro from '../components/MensagemErro';
 import { rotaInicial, useAuth } from '../context/AuthContext';
-import { get } from '../services/api';
+import useDados from '../hooks/useDados';
 
 export default function Entrar() {
   const { perfil, entrar } = useAuth();
   const navigate = useNavigate();
 
-  const [alunos, setAlunos] = useState([]);
+  const { dados, carregando, erro, tentarNovamente } = useDados({ alunos: '/alunos' });
   const [alunoId, setAlunoId] = useState('');
-  const [carregando, setCarregando] = useState(true);
-  const [erro, setErro] = useState('');
 
-  async function buscarAlunos() {
-    try {
-      const lista = await get('/alunos');
-      setAlunos(lista.sort((a, b) => a.nome.localeCompare(b.nome)));
-    } catch (e) {
-      setErro(e.message);
-    } finally {
-      setCarregando(false);
-    }
-  }
-
-  function tentarNovamente() {
-    setCarregando(true);
-    setErro('');
-    buscarAlunos();
-  }
-
-  // Equivale ao componentDidMount: busca os alunos uma vez ao abrir a tela
-  useEffect(() => {
-    buscarAlunos();
-  }, []);
+  const alunos = useMemo(
+    () => [...(dados?.alunos ?? [])].sort((a, b) => a.nome.localeCompare(b.nome)),
+    [dados]
+  );
 
   // Quem já está logado vai direto para sua página inicial
   if (perfil) return <Navigate to={rotaInicial(perfil)} replace />;
