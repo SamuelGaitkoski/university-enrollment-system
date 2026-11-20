@@ -3,6 +3,7 @@ import { Badge, Button, Card, Col, Form, InputGroup, Row } from 'react-bootstrap
 import Carregando from '../../components/Carregando';
 import MensagemErro from '../../components/MensagemErro';
 import ModalConfirmacao from '../../components/ModalConfirmacao';
+import Seletor from '../../components/Seletor';
 import StatusTurma from '../../components/StatusTurma';
 import { useAuth } from '../../context/AuthContext';
 import { useNotificacao } from '../../context/NotificacaoContext';
@@ -119,24 +120,20 @@ export default function Ofertas() {
                   </InputGroup>
                 </Col>
                 <Col xs={6} md={2}>
-                  <Form.Select name="dia" value={filtros.dia} onChange={handleFiltro} aria-label="Dia">
-                    <option value="">Todos os dias</option>
-                    {DIAS.map((d) => (
-                      <option key={d.codigo} value={d.codigo}>
-                        {d.nome}
-                      </option>
-                    ))}
-                  </Form.Select>
+                  <Seletor
+                    ariaLabel="Dia"
+                    value={filtros.dia}
+                    onChange={(dia) => setFiltros({ ...filtros, dia })}
+                    opcoes={[{ valor: '', rotulo: 'Todos os dias' }, ...DIAS.map((d) => ({ valor: d.codigo, rotulo: d.nome }))]}
+                  />
                 </Col>
                 <Col xs={6} md={2}>
-                  <Form.Select name="turno" value={filtros.turno} onChange={handleFiltro} aria-label="Turno">
-                    <option value="">Todos os turnos</option>
-                    {TURNOS.map((t) => (
-                      <option key={t.codigo} value={t.codigo}>
-                        {t.nome}
-                      </option>
-                    ))}
-                  </Form.Select>
+                  <Seletor
+                    ariaLabel="Turno"
+                    value={filtros.turno}
+                    onChange={(turno) => setFiltros({ ...filtros, turno })}
+                    opcoes={[{ valor: '', rotulo: 'Todos os turnos' }, ...TURNOS.map((t) => ({ valor: t.codigo, rotulo: t.nome }))]}
+                  />
                 </Col>
                 <Col md={3}>
                   <Form.Check
