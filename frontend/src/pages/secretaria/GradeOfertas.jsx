@@ -1,10 +1,11 @@
 import { useMemo, useState } from 'react';
-import { Card, Col, Form, Row } from 'react-bootstrap';
+import { Card, Col, Row } from 'react-bootstrap';
 import Carregando from '../../components/Carregando';
 import GradeSemanal from '../../components/GradeSemanal';
 import MensagemErro from '../../components/MensagemErro';
 import useDados from '../../hooks/useDados';
 import { SEMESTRE_ATUAL, corDaCarga, ocupacao } from '../../utils/regras';
+import Seletor from '../../components/Seletor';
 
 // UC5 — grade de ofertas do semestre (visão da secretaria)
 export default function GradeOfertas() {
@@ -60,25 +61,25 @@ export default function GradeOfertas() {
           <Card.Body>
             <Row className="g-2 mb-3 align-items-center">
               <Col sm={4} lg={3}>
-                <Form.Select value={semestre} onChange={(e) => setSemestre(e.target.value)} aria-label="Semestre">
-                  {semestres.map((s) => (
-                    <option key={s} value={s}>
-                      Semestre {s}
-                    </option>
-                  ))}
-                </Form.Select>
+                <Seletor
+                  ariaLabel="Semestre"
+                  value={semestre}
+                  onChange={setSemestre}
+                  opcoes={semestres.map((s) => ({ valor: s, rotulo: `Semestre ${s}` }))}
+                />
               </Col>
               <Col sm={4} lg={3}>
-                <Form.Select value={professorId} onChange={(e) => setProfessorId(e.target.value)} aria-label="Professor">
-                  <option value="">Todos os professores</option>
-                  {[...dados.professores]
-                    .sort((a, b) => a.nome.localeCompare(b.nome))
-                    .map((p) => (
-                      <option key={p.id} value={p.id}>
-                        {p.nome}
-                      </option>
-                    ))}
-                </Form.Select>
+                <Seletor
+                  ariaLabel="Professor"
+                  value={professorId}
+                  onChange={setProfessorId}
+                  opcoes={[
+                    { valor: '', rotulo: 'Todos os professores' },
+                    ...[...dados.professores]
+                      .sort((a, b) => a.nome.localeCompare(b.nome))
+                      .map((p) => ({ valor: p.id, rotulo: p.nome })),
+                  ]}
+                />
               </Col>
               <Col className="small text-secondary">
                 {itens.length} turmas · borda{' '}
