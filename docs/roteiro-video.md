@@ -32,11 +32,22 @@ Mostre rapidamente o README ou a estrutura de pastas.
 ## 3. Código (≈ 1 min 30 s)
 
 1. **`backend/server.js`** (15 s): `app.get/post/put/delete` genéricos por coleção, `cors()` e `express.json()`, e o bloqueio 409 quando há vínculos.
+   > "No back-end, um único conjunto de rotas atende todas as coleções: disciplinas, professores, alunos, turmas e matrículas. O `cors` libera o acesso do front e o `express.json` lê o corpo das requisições. Antes de excluir, o servidor confere os vínculos: se uma disciplina ainda tem turmas, por exemplo, ele responde 409 e não apaga."
+
 2. **`services/api.js`** (10 s): o `fetch` centralizado, que converte erros em mensagens em português.
+   > "Todas as chamadas passam por este arquivo: `get`, `post`, `put` e `del` usam o `fetch` nativo. Se a resposta não é ok, ou o servidor está fora do ar, ele lança um erro com uma mensagem em português, que a tela mostra."
+
 3. **`context/AuthContext.jsx`** (15 s): Context API guardando o perfil no `localStorage`; o `RotaProtegida` usa isso para liberar as rotas.
+   > "O login é só a escolha do perfil, sem senha. O Context guarda quem entrou e salva no `localStorage`, então recarregar a página não desloga. O `RotaProtegida` lê esse perfil: se não há ninguém logado, ou o perfil não combina com a rota, ele redireciona."
+
 4. **`utils/regras.js`** (25 s): `verificarOferta` (conflito e carga do professor) e `avaliarMatricula`, que testa as regras em ordem e devolve `{ permitido, status, motivo }`. São funções puras, separadas dos componentes.
+   > "Aqui ficam as regras de negócio. O `verificarOferta` impede que o professor tenha duas turmas no mesmo horário ou passe da carga máxima. O `avaliarMatricula` testa, em ordem: já matriculado, já cursada, outra turma da mesma disciplina, pré-requisito, vagas, conflito de horário e limite de 20 créditos. A primeira que falhar define o status e o motivo. Como são funções puras, a mesma regra vale na tela e na hora de confirmar."
+
 5. **`components/FormularioTurma.jsx`** (15 s): formulário controlado (`value` + `onChange`), erros da regex em `validacoes.js` mais as regras de negócio, exibidos com `Form.Control.Feedback`.
+   > "O formulário é controlado: cada campo lê do estado com `value` e atualiza com `onChange`. Primeiro valida o formato com as regex de `validacoes.js`, depois as regras de oferta. O erro só aparece depois que o campo foi tocado ou ao tentar salvar."
+
 6. **`pages/aluno/Ofertas.jsx`** (10 s): `useDados` no lugar do `componentDidMount`, `useMemo` para calcular o status de cada turma e a renderização condicional do badge e do botão *Matricular*.
+   > "O hook `useDados` faz a busca inicial com `useEffect`, que substitui o `componentDidMount`. O `useMemo` calcula o status de cada turma só quando os dados mudam. E a renderização condicional mostra o badge certo e desabilita o botão quando a matrícula não é permitida."
 
 ## 4. Encerramento (≈ 15 s)
 
