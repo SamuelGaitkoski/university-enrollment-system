@@ -33,3 +33,49 @@ export function validarDisciplina(form, disciplinas, idAtual) {
 
   return erros;
 }
+
+export function validarProfessor(form, professores, idAtual, cargaAtual = 0) {
+  const erros = {};
+
+  const erroNome = validarNome(form.nome, REGEX.nomePessoa, 'Use apenas letras e espaços.');
+  if (erroNome) erros.nome = erroNome;
+
+  if (!REGEX.email.test(form.email.trim())) {
+    erros.email = 'Informe um e-mail válido (ex.: nome@universidade.edu.br).';
+  } else if (professores.some((p) => p.email === form.email.trim() && p.id !== idAtual)) {
+    erros.email = 'Já existe um professor com este e-mail.';
+  }
+
+  const carga = Number(form.cargaMaxima);
+  if (!Number.isInteger(carga) || carga < 2 || carga > 40) {
+    erros.cargaMaxima = 'Informe um número inteiro entre 2 e 40.';
+  } else if (carga < cargaAtual) {
+    // Não deixa reduzir a carga abaixo do que o professor já leciona
+    erros.cargaMaxima = `O professor já leciona ${cargaAtual} créditos neste semestre.`;
+  }
+
+  return erros;
+}
+
+export function validarAluno(form, alunos, idAtual) {
+  const erros = {};
+
+  if (!REGEX.matricula.test(form.matricula)) {
+    erros.matricula = 'A matrícula deve ter exatamente 9 dígitos.';
+  } else if (alunos.some((a) => a.matricula === form.matricula && a.id !== idAtual)) {
+    erros.matricula = 'Já existe um aluno com esta matrícula.';
+  }
+
+  const erroNome = validarNome(form.nome, REGEX.nomePessoa, 'Use apenas letras e espaços.');
+  if (erroNome) erros.nome = erroNome;
+
+  if (!REGEX.email.test(form.email.trim())) {
+    erros.email = 'Informe um e-mail válido (ex.: nome@aluno.edu.br).';
+  } else if (alunos.some((a) => a.email === form.email.trim() && a.id !== idAtual)) {
+    erros.email = 'Já existe um aluno com este e-mail.';
+  }
+
+  if (!form.curso) erros.curso = 'Selecione o curso.';
+
+  return erros;
+}
