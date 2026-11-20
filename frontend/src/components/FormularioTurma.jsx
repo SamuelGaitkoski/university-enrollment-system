@@ -4,6 +4,7 @@ import { horarioCurto, ordenarHorarios } from '../utils/horarios';
 import { SEMESTRE_ATUAL, cargaProfessor, ocupacao, verificarOferta } from '../utils/regras';
 import { validarTurma } from '../utils/validacoes';
 import SeletorHorarios from './SeletorHorarios';
+import Seletor from './Seletor';
 
 // Modal de criar/editar turma (UC2 — ofertar turma)
 export default function FormularioTurma({ turma, dados, onSalvar, onFechar }) {
@@ -43,10 +44,13 @@ export default function FormularioTurma({ turma, dados, onSalvar, onFechar }) {
   const disciplinasOrdenadas = [...disciplinas].sort((a, b) => a.codigo.localeCompare(b.codigo));
   const professoresOrdenados = [...professores].sort((a, b) => a.nome.localeCompare(b.nome));
 
+  function alterarCampo(campo, valor) {
+    setForm({ ...form, [campo]: valor });
+    setTocados({ ...tocados, [campo]: true });
+  }
+
   function handleChange(evento) {
-    const { name, value } = evento.target;
-    setForm({ ...form, [name]: value });
-    setTocados({ ...tocados, [name]: true });
+    alterarCampo(evento.target.name, evento.target.value);
   }
 
   async function handleSubmit(evento) {
@@ -78,43 +82,35 @@ export default function FormularioTurma({ turma, dados, onSalvar, onFechar }) {
             <Col md={6}>
               <Form.Group controlId="disciplinaId">
                 <Form.Label>Disciplina</Form.Label>
-                <Form.Select
-                  name="disciplinaId"
+                <Seletor
+                  id="disciplinaId"
                   value={form.disciplinaId}
-                  onChange={handleChange}
-                  isInvalid={Boolean(erroVisivel('disciplinaId'))}
-                  autoFocus
-                >
-                  <option value="">Selecione...</option>
-                  {disciplinasOrdenadas.map((d) => (
-                    <option key={d.id} value={d.id}>
-                      {d.codigo} — {d.nome} ({d.creditos} cr.)
-                    </option>
-                  ))}
-                </Form.Select>
-                <Form.Control.Feedback type="invalid">{erros.disciplinaId}</Form.Control.Feedback>
+                  onChange={(valor) => alterarCampo('disciplinaId', valor)}
+                  opcoes={disciplinasOrdenadas.map((d) => ({
+                    valor: d.id,
+                    rotulo: `${d.codigo} — ${d.nome} (${d.creditos} cr.)`,
+                  }))}
+                  erro={erros.disciplinaId}
+                  mostrarErro={Boolean(erroVisivel('disciplinaId'))}
+                />
               </Form.Group>
             </Col>
 
             <Col md={6}>
               <Form.Group controlId="professorId">
                 <Form.Label>Professor</Form.Label>
-                <Form.Select
-                  name="professorId"
+                {/* Mostra a carga de cada professor para apoiar a distribuição equilibrada */}
+                <Seletor
+                  id="professorId"
                   value={form.professorId}
-                  onChange={handleChange}
-                  isInvalid={Boolean(erroVisivel('professorId'))}
-                >
-                  <option value="">Selecione...</option>
-                  {/* Mostra a carga de cada professor para apoiar a distribuição equilibrada */}
-                  {professoresOrdenados.map((p) => (
-                    <option key={p.id} value={p.id}>
-                      {p.nome} — {cargaProfessor(p.id, form.semestre, turmas, disciplinas, turma.id)}/
-                      {p.cargaMaxima} cr.
-                    </option>
-                  ))}
-                </Form.Select>
-                <Form.Control.Feedback type="invalid">{erros.professorId}</Form.Control.Feedback>
+                  onChange={(valor) => alterarCampo('professorId', valor)}
+                  opcoes={professoresOrdenados.map((p) => ({
+                    valor: p.id,
+                    rotulo: `${p.nome} — ${cargaProfessor(p.id, form.semestre, turmas, disciplinas, turma.id)}/${p.cargaMaxima} cr.`,
+                  }))}
+                  erro={erros.professorId}
+                  mostrarErro={Boolean(erroVisivel('professorId'))}
+                />
               </Form.Group>
             </Col>
 
