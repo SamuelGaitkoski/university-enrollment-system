@@ -70,3 +70,68 @@ export function verificarOferta(turma, { turmas, disciplinas, professores }) {
 
   return erros;
 }
+
+// Limite de créditos que o aluno pode cursar por semestre
+export const LIMITE_CREDITOS = 20;
+
+// Turmas em que o aluno está matriculado no semestre, já com a disciplina junto
+export function turmasDoAluno(alunoId, semestre, { turmas, disciplinas, matriculas }) {
+  return matriculas
+    .filter((m) => m.alunoId === alunoId)
+    .map((m) => ({ matricula: m, turma: turmas.find((t) => t.id === m.turmaId) }))
+    .filter(({ turma }) => turma && turma.semestre === semestre)
+    .map(({ matricula, turma }) => ({
+      matricula,
+      turma,
+      disciplina: disciplinas.find((d) => d.id === turma.disciplinaId),
+    }));
+}
+
+export function creditosDoAluno(alunoId, semestre, dados) {
+  return turmasDoAluno(alunoId, semestre, dados).reduce((total, { disciplina }) => total + (disciplina?.creditos ?? 0), 0);
+}
+
+// Regras da matrícula (UC3). Verifica em ordem e para no primeiro bloqueio.
+// Devolve { permitido, status, motivo } para a tela mostrar o status de cada turma.
+export function avaliarMatricula(aluno, turma, dados) {
+  const { disciplinas, matriculas } = dados;
+  const disciplina = disciplinas.find((d) => d.id === turma.disciplinaId);
+  const codigoDe = (id) => disciplinas.find((d) => d.id === id)?.codigo ?? '?';
+  const minhas = turmasDoAluno(aluno.id, turma.semestre, dados);
+  const bloqueio = (status, motivo) => ({ permitido: false, status, motivo });
+
+  if (minhas.some(({ turma: t }) => t.id === turma.id)) {
+    return bloqueio('matriculado', 'Você já está matriculado nesta turma.');
+  }
+
+  if (aluno.disciplinasAprovadas.includes(turma.disciplinaId)) {
+    return bloqueio('cursada', 'Você já foi aprovado nesta disciplina.');
+  }
+
+  if (minhas.some(({ turma: t }) => t.disciplinaId === turma.disciplinaId)) {
+    return bloqueio('mesmaDisciplina', 'Você já está em outra turma desta disciplina.');
+  }
+
+  const pendentes = (disciplina?.preRequisitos ?? []).filter((id) => !aluno.disciplinasAprovadas.includes(id));
+  if (pendentes.length > 0) {
+    return bloqueio('preRequisito', `Falta aprovação em: ${pendentes.map(codigoDe).join(', ')}.`);
+  }
+
+  if (ocupacao(turma.id, matriculas) >= turma.vagas) {
+    return bloqueio('lotada', 'Todas as vagas estão preenchidas.');
+  }
+
+  for (const { turma: outra, disciplina: outraDisciplina } of minhas) {
+    const comum = horariosEmComum(turma.horarios, outra.horarios);
+    if (comum.length > 0) {
+      return bloqueio('conflito', `Choca com ${outraDisciplina?.codigo} na ${decodificarHorario(comum[0])}.`);
+    }
+  }
+
+  const creditos = creditosDoAluno(aluno.id, turma.semestre, dados) + (disciplina?.creditos ?? 0);
+  if (creditos > LIMITE_CREDITOS) {
+    return bloqueio('creditos', `Ficaria com ${creditos} créditos (máximo ${LIMITE_CREDITOS}).`);
+  }
+
+  return { permitido: true, status: 'disponivel', motivo: 'Você pode se matricular.' };
+}
