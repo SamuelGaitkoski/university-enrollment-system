@@ -1,0 +1,3 @@
+# Arquivos fora do ZIP de entrega (npm run zip usa git archive)
+CLAUDE.md export-ignore
+docs/roteiro-video.md export-ignore
