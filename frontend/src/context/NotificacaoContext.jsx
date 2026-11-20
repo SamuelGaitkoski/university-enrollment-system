@@ -25,7 +25,8 @@ export function NotificacaoProvider({ children }) {
   return (
     <NotificacaoContext.Provider value={{ notificar }}>
       {children}
-      <ToastContainer position="top-end" className="p-3 position-fixed" style={{ zIndex: 2000 }}>
+      {/* Abaixo da barra de navegação, para não cobrir o botão Sair */}
+      <ToastContainer position="top-end" className="p-3 mt-5 position-fixed" style={{ zIndex: 2000 }}>
         {notificacoes.map((n) => (
           <Toast key={n.id} bg={n.tipo} onClose={() => remover(n.id)} delay={4000} autohide>
             <Toast.Body className={`d-flex align-items-start gap-2 ${n.tipo === 'warning' ? '' : 'text-white'}`}>
