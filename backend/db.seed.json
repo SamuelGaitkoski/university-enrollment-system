@@ -1,0 +1,52 @@
+{
+  "disciplinas": [
+    { "id": "d1", "codigo": "INF101", "nome": "Algoritmos I", "creditos": 4, "preRequisitos": [] },
+    { "id": "d2", "codigo": "INF102", "nome": "Algoritmos II", "creditos": 4, "preRequisitos": ["d1"] },
+    { "id": "d3", "codigo": "INF201", "nome": "Estruturas de Dados", "creditos": 4, "preRequisitos": ["d2"] },
+    { "id": "d4", "codigo": "INF301", "nome": "Banco de Dados", "creditos": 4, "preRequisitos": ["d3"] },
+    { "id": "d5", "codigo": "INF210", "nome": "Programação Front-end", "creditos": 4, "preRequisitos": ["d2"] },
+    { "id": "d6", "codigo": "MAT101", "nome": "Cálculo I", "creditos": 4, "preRequisitos": [] },
+    { "id": "d7", "codigo": "INF110", "nome": "Lógica para Computação", "creditos": 2, "preRequisitos": [] },
+    { "id": "d8", "codigo": "INF320", "nome": "Engenharia de Software", "creditos": 2, "preRequisitos": ["d2"] }
+  ],
+  "professores": [
+    { "id": "p1", "nome": "Carlos Lima", "email": "carlos.lima@universidade.edu.br", "cargaMaxima": 12 },
+    { "id": "p2", "nome": "Marina Rocha", "email": "marina.rocha@universidade.edu.br", "cargaMaxima": 16 },
+    { "id": "p3", "nome": "Paulo Mendes", "email": "paulo.mendes@universidade.edu.br", "cargaMaxima": 8 },
+    { "id": "p4", "nome": "Renata Alves", "email": "renata.alves@universidade.edu.br", "cargaMaxima": 12 }
+  ],
+  "alunos": [
+    { "id": "a1", "matricula": "202610001", "nome": "Ana Souza", "email": "ana.souza@aluno.edu.br", "curso": "Ciência da Computação", "disciplinasAprovadas": [] },
+    { "id": "a2", "matricula": "202510002", "nome": "Bruno Costa", "email": "bruno.costa@aluno.edu.br", "curso": "Ciência da Computação", "disciplinasAprovadas": ["d1", "d6"] },
+    { "id": "a3", "matricula": "202410003", "nome": "Carla Dias", "email": "carla.dias@aluno.edu.br", "curso": "Sistemas de Informação", "disciplinasAprovadas": ["d1", "d2", "d6", "d7"] },
+    { "id": "a4", "matricula": "202310004", "nome": "Diego Martins", "email": "diego.martins@aluno.edu.br", "curso": "Ciência da Computação", "disciplinasAprovadas": ["d1", "d2", "d3", "d6", "d7", "d8"] },
+    { "id": "a5", "matricula": "202510005", "nome": "Elisa Ferreira", "email": "elisa.ferreira@aluno.edu.br", "curso": "Sistemas de Informação", "disciplinasAprovadas": ["d1", "d7"] },
+    { "id": "a6", "matricula": "202410006", "nome": "Felipe Gomes", "email": "felipe.gomes@aluno.edu.br", "curso": "Ciência da Computação", "disciplinasAprovadas": ["d1", "d2", "d3", "d6"] }
+  ],
+  "turmas": [
+    { "id": "t1", "disciplinaId": "d1", "professorId": "p1", "semestre": "2026/2", "horarios": ["21", "41"], "vagas": 40 },
+    { "id": "t2", "disciplinaId": "d2", "professorId": "p2", "semestre": "2026/2", "horarios": ["32"], "vagas": 30 },
+    { "id": "t3", "disciplinaId": "d3", "professorId": "p4", "semestre": "2026/2", "horarios": ["33", "53"], "vagas": 25 },
+    { "id": "t4", "disciplinaId": "d4", "professorId": "p4", "semestre": "2026/2", "horarios": ["43"], "vagas": 3 },
+    { "id": "t5", "disciplinaId": "d5", "professorId": "p1", "semestre": "2026/2", "horarios": ["23", "63"], "vagas": 30 },
+    { "id": "t6", "disciplinaId": "d6", "professorId": "p3", "semestre": "2026/2", "horarios": ["22", "42"], "vagas": 50 },
+    { "id": "t7", "disciplinaId": "d7", "professorId": "p1", "semestre": "2026/2", "horarios": ["32"], "vagas": 35 },
+    { "id": "t8", "disciplinaId": "d8", "professorId": "p4", "semestre": "2026/2", "horarios": ["71"], "vagas": 2 },
+    { "id": "t9", "disciplinaId": "d1", "professorId": "p2", "semestre": "2026/2", "horarios": ["31", "51"], "vagas": 40 }
+  ],
+  "matriculas": [
+    { "id": "m1", "alunoId": "a1", "turmaId": "t1", "dataMatricula": "2026-08-03T10:15:00.000Z" },
+    { "id": "m2", "alunoId": "a1", "turmaId": "t6", "dataMatricula": "2026-08-03T10:17:00.000Z" },
+    { "id": "m3", "alunoId": "a1", "turmaId": "t7", "dataMatricula": "2026-08-03T10:20:00.000Z" },
+    { "id": "m4", "alunoId": "a2", "turmaId": "t2", "dataMatricula": "2026-08-04T14:02:00.000Z" },
+    { "id": "m5", "alunoId": "a3", "turmaId": "t3", "dataMatricula": "2026-08-04T19:30:00.000Z" },
+    { "id": "m6", "alunoId": "a3", "turmaId": "t5", "dataMatricula": "2026-08-04T19:32:00.000Z" },
+    { "id": "m7", "alunoId": "a3", "turmaId": "t8", "dataMatricula": "2026-08-04T19:35:00.000Z" },
+    { "id": "m8", "alunoId": "a4", "turmaId": "t4", "dataMatricula": "2026-08-05T09:00:00.000Z" },
+    { "id": "m9", "alunoId": "a4", "turmaId": "t5", "dataMatricula": "2026-08-05T09:04:00.000Z" },
+    { "id": "m10", "alunoId": "a5", "turmaId": "t2", "dataMatricula": "2026-08-05T11:45:00.000Z" },
+    { "id": "m11", "alunoId": "a6", "turmaId": "t4", "dataMatricula": "2026-08-06T20:10:00.000Z" },
+    { "id": "m12", "alunoId": "a6", "turmaId": "t8", "dataMatricula": "2026-08-06T20:12:00.000Z" },
+    { "id": "m13", "alunoId": "a6", "turmaId": "t5", "dataMatricula": "2026-08-06T20:15:00.000Z" }
+  ]
+}
